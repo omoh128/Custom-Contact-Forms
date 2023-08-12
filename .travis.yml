@@ -1,0 +1,42 @@
+# Specify the programming language
+language: php
+
+# Specify the PHP versions to test against
+php:
+  - 7.4
+
+# Specify the branches you want Travis CI to build
+branches:
+  only:
+    - main
+
+# Specify the environment variables
+env:
+  global:
+    - WP_VERSION=latest WP_MULTISITE=0
+
+# Define a matrix of test configurations
+matrix:
+  include:
+    - php: 7.4
+      env: WP_VERSION=latest WP_MULTISITE=0
+
+# Install dependencies and setup WordPress
+before_script:
+  - composer install --no-dev --optimize-autoloader
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+
+# Run the PHPUnit tests
+script:
+  - phpunit
+
+# Cache Composer packages to speed up builds
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+# Notification settings
+notifications:
+  email:
+    on_success: never
+    on_failure: always
