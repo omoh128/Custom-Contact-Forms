@@ -1,4 +1,3 @@
-// form-script.js
 document.addEventListener('DOMContentLoaded', function() {
     var contactForm = document.getElementById('custom-contact-form');
     
@@ -17,11 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
             url: custom_contact_form_ajax_object.ajax_url, // Use the localized ajax_url
             data: {
                 action: 'custom_contact_form_submit', // Custom AJAX action
-                formData: serializedFormData, // Use the serialized form data
-                nonce: custom_contact_form_ajax_object.nonce // Use the localized nonce
+                formData: serializedFormData, //the serialized form data
+                nonce: custom_contact_form_ajax_object.nonce //  localized nonce
             },
             success: function(response) {
-                console.log(response); // Log the response in the browser console
+                console.log(response); // response in the browser console
+
+                // Reset form fields if submission was successful
+                contactForm.reset();
             }
         });
     });

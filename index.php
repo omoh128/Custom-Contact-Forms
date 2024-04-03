@@ -8,8 +8,10 @@
  */
 
 // Exit if accessed directly
+
+// If this file is called directly, abort.
 if (!defined('ABSPATH')) {
-    exit;
+    die;
 }
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -18,6 +20,7 @@ define('CUSTOM_CONTACT_FORMS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CUSTOM_CONTACT_FORMS_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 use Omomohagiogu\CustomContactForms\CustomContactFormsPlugin;
+
 // Initialize the plugin
 add_action('plugins_loaded', function () {
     new CustomContactFormsPlugin;

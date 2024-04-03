@@ -1,23 +1,41 @@
 <?php
+declare(strict_types=1);
+
 namespace CustomContactForms\Tests;
 
 use CustomContactForms\ContactForm;
 use WP_UnitTestCase;
 
-class ContactFormTest extends WP_UnitTestCase {
-
-    public function testFormRender() {
+class ContactFormTest extends WP_UnitTestCase
+{
+    /**
+     * @covers ContactForm::render
+     */
+    public function testFormRenderWithData($inputName, $inputEmail, $inputMessage, $expectedOutput)
+    {
+        $_POST['name'] = $inputName;
+        $_POST['email'] = $inputEmail;
+        $_POST['message'] = $inputMessage;
+    
         $contact_form = new ContactForm();
         $form_html = $contact_form->render();
-
-        // Perform assertions to validate the rendered form HTML
-        $this->assertContains('<form', $form_html);
-        $this->assertContains('name="name"', $form_html);
-        $this->assertContains('name="email"', $form_html);
-        $this->assertContains('name="message"', $form_html);
+    
+        $this->assertEquals($expectedOutput, $form_html);
+    }
+    
+    public function formDataProvider()
+    {
+        return [
+            ['John Doe', 'john@example.com', 'Test message', '<form ...'],
+            // Add more test cases as needed
+        ];
     }
 
-    public function testFormSubmission() {
+    /**
+     * @covers ContactForm::ajax_submit
+     */
+    public function testFormSubmission()
+    {
         // Simulate an AJAX form submission
         $_POST['action'] = 'custom_contact_form_submit';
         $_POST['name'] = 'John Doe';
@@ -36,3 +54,4 @@ class ContactFormTest extends WP_UnitTestCase {
         // Additional assertions can be added to test form processing logic
     }
 }
+
