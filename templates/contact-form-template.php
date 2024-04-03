@@ -1,3 +1,6 @@
+<?php
+// Start of PHP code block
+?>
 <form id="custom-contact-form" action="" method="post">
     <div class="form-group">
         <label for="name">Name:</label>
@@ -13,4 +16,8 @@
     </div>
     <button type="submit">Submit</button>
 </form>
+<?php
+// End of PHP code block
+?>
+
 

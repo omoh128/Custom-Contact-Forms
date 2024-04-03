@@ -1,18 +1,64 @@
 <?php
+declare(strict_types=1);
 
-// Load WordPress testing environment
-$_tests_dir = getenv('WP_TESTS_DIR') ?: '/path/to/wordpress/tests/phpunit';
+namespace CustomContactForms\Tests;
 
-$_tests_dir = './';
+use CustomContactForms\ContactForm;
+use WP_UnitTestCase;
 
-// Load the plugin files
-define('WP_PLUGIN_DIR', '/Users/omomohagiogu/Local Sites/newbook/app/public/wp-content/plugins');
-require_once WP_PLUGIN_DIR . '/custom-contact-forms/vendor/autoload.php'; // Update this line to autoload.php
+class ContactFormTest extends WP_UnitTestCase
+{
+    /**
+     * Data provider for form rendering test.
+     */
+    public function formDataProvider()
+    {
+        return [
+            ['John Doe', 'john@example.com', 'Test message', '<form ...'],
+            // Add more test cases as needed
+        ];
+    }
 
-// Start up the WP testing environment
-function _manually_load_plugin() {
-    require WP_PLUGIN_DIR . '/custom-contact-forms/custom-contact-forms.php';
+    /**
+     * Test form rendering with data from the data provider.
+     *
+     * @dataProvider formDataProvider
+     * @covers ContactForm::render
+     */
+    public function testFormRenderWithData($inputName, $inputEmail, $inputMessage, $expectedOutput)
+    {
+        $_POST['name'] = $inputName;
+        $_POST['email'] = $inputEmail;
+        $_POST['message'] = $inputMessage;
+
+        $contact_form = new ContactForm();
+        $form_html = $contact_form->render();
+
+        $this->assertEquals($expectedOutput, $form_html);
+    }
+
+    /**
+     * Test form submission.
+     *
+     * @covers ContactForm::ajax_submit
+     */
+    public function testFormSubmission()
+    {
+        // Simulate an AJAX form submission
+        $_POST['action'] = 'custom_contact_form_submit';
+        $_POST['name'] = 'John Doe';
+        $_POST['email'] = 'john@example.com';
+        $_POST['message'] = 'Test message';
+
+        // Mock the wp_send_json function
+        $this->expectOutputString(json_encode(array(
+            'success' => true,
+            'message' => 'Form submitted successfully!'
+        )));
+
+        $contact_form = new ContactForm();
+        $contact_form->ajax_submit();
+
+        // Additional assertions can be added to test form processing logic
+    }
 }
-tests_add_filter('muplugins_loaded', '_manually_load_plugin');
-
-

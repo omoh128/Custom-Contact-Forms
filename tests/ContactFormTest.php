@@ -9,20 +9,8 @@ use WP_UnitTestCase;
 class ContactFormTest extends WP_UnitTestCase
 {
     /**
-     * @covers ContactForm::render
+     * Data provider for form rendering test.
      */
-    public function testFormRenderWithData($inputName, $inputEmail, $inputMessage, $expectedOutput)
-    {
-        $_POST['name'] = $inputName;
-        $_POST['email'] = $inputEmail;
-        $_POST['message'] = $inputMessage;
-    
-        $contact_form = new ContactForm();
-        $form_html = $contact_form->render();
-    
-        $this->assertEquals($expectedOutput, $form_html);
-    }
-    
     public function formDataProvider()
     {
         return [
@@ -32,6 +20,26 @@ class ContactFormTest extends WP_UnitTestCase
     }
 
     /**
+     * Test form rendering with data from the data provider.
+     *
+     * @dataProvider formDataProvider
+     * @covers ContactForm::render
+     */
+    public function testFormRenderWithData($inputName, $inputEmail, $inputMessage, $expectedOutput)
+    {
+        $_POST['name'] = $inputName;
+        $_POST['email'] = $inputEmail;
+        $_POST['message'] = $inputMessage;
+
+        $contact_form = new ContactForm();
+        $form_html = $contact_form->render();
+
+        $this->assertEquals($expectedOutput, $form_html);
+    }
+
+    /**
+     * Test form submission.
+     *
      * @covers ContactForm::ajax_submit
      */
     public function testFormSubmission()
@@ -51,7 +59,6 @@ class ContactFormTest extends WP_UnitTestCase
         $contact_form = new ContactForm();
         $contact_form->ajax_submit();
 
-        // Additional assertions can be added to test form processing logic
+        
     }
 }
-
