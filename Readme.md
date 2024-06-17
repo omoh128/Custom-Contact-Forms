@@ -1,14 +1,3 @@
-=== Custom Contact Forms ===
-Contributors: YourName
-Tags: contact form, custom form, WordPress plugin
-Requires at least: 4.9
-Tested up to: 5.8
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
-Create and manage custom contact forms with ease using this WordPress plugin.
-
 == Description ==
 
 Custom Contact Forms is a simple and lightweight plugin that allows users to create and manage their own contact forms. It provides an easy-to-use interface for adding customizable contact forms to your WordPress site.
